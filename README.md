@@ -25,8 +25,10 @@ Everything is containerized using Docker Compose and communicates via a bridge n
 ├── service_2/
 │   ├── Dockerfile
 │   ├── app.py
+│   ├── pyproject.toml
 │   └── README.md
-├── test.sh
+├── test/
+│   └── test.sh
 └── README.md
 ```
 
