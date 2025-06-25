@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  reverse_proxy:
+    build: ./nginx
+    container_name: nginx_gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - service1
+      - service2
+    networks:
+      - backend_net
+
+  service1:
+    build: ./service_1
+    container_name: go_api_service
+    networks:
+      - backend_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  service2:
+    build: ./service_2
+    container_name: flask_api_service
+    networks:
+      - backend_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+networks:
+  backend_net:
+    driver: bridge
